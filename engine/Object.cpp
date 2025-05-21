@@ -4,8 +4,8 @@
 
 #include <stdexcept>
 
-#include <Object.h>
-#include <linalg/Matrix4x4.h>
+#include "Object.h"
+#include "math/Matrix4x4.h"
 
 bool ObjectNameTag::contains(const ObjectNameTag &nameTag) const {
     if(_name.find(nameTag.str()) != std::string::npos) {
@@ -43,7 +43,7 @@ void Object::transformRelativePoint(const Vec3D &point, const Matrix4x4 &transfo
 
 void Object::translate(const Vec3D &dv) {
 
-    // TODO: implement (lesson 2)
+    _position = _position + dv;
 
     for (auto &[attachedName, attachedObject] : _attachedObjects) {
         if (!attachedObject.expired()) {
@@ -53,39 +53,62 @@ void Object::translate(const Vec3D &dv) {
 }
 
 void Object::scale(const Vec3D &s) {
-    // TODO: implement (lesson 2)
+
+    transform(Matrix4x4::Scale(s));
 }
 
 void Object::rotate(const Vec3D &r) {
-    // TODO: implement (lesson 2)
+    _angle = _angle + r;
+
+    transform(Matrix4x4::Rotation(r));
 }
 
 void Object::rotate(const Vec3D &v, double rv) {
-    // TODO: implement (lesson 2)
+   transform(Matrix4x4::Rotation(v, rv));
 }
 
 void Object::rotateRelativePoint(const Vec3D &s, const Vec3D &r) {
-    // TODO: implement (lesson 2)
+    _angle = _angle + r;
+
+    transformRelativePoint(s, Matrix4x4::Rotation(r));
 }
 
 void Object::rotateRelativePoint(const Vec3D &s, const Vec3D &v, double r) {
-    // TODO: implement (lesson 2)
+    transformRelativePoint(s,  Matrix4x4::Rotation(v, r));
 }
 
 void Object::rotateLeft(double rl) {
-    // TODO: implement (lesson 2)
+    _angleLeftUpLookAt = Vec3D(
+        _angleLeftUpLookAt.x() + rl, 
+        _angleLeftUpLookAt.y(),
+        _angleLeftUpLookAt.z()
+    );
+
+    rotate(left(), rl);    
 }
 
 void Object::rotateUp(double ru) {
-    // TODO: implement (lesson 2)
+    _angleLeftUpLookAt = Vec3D(
+        _angleLeftUpLookAt.x(), 
+        _angleLeftUpLookAt.y() + ru,
+        _angleLeftUpLookAt.z()
+    );
+
+    rotate(left(), ru);    
 }
 
 void Object::rotateLookAt(double rlAt) {
-    // TODO: implement (lesson 2)
+    _angleLeftUpLookAt = Vec3D(
+        _angleLeftUpLookAt.x(), 
+        _angleLeftUpLookAt.y(),
+        _angleLeftUpLookAt.z() + rlAt
+    );
+
+    rotate(left(), rlAt);   
 }
 
 void Object::translateToPoint(const Vec3D &point) {
-    // TODO: implement (lesson 2)
+    translate(point - _position);
 }
 
 void Object::attractToPoint(const Vec3D &point, double value) {

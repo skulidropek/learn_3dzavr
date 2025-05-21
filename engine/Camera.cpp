@@ -4,9 +4,9 @@
 
 #include <cmath>
 
-#include <Camera.h>
-#include <utils/Log.h>
-#include <Consts.h>
+#include "Camera.h"
+#include "utils/Log.h"
+#include "Consts.h"
 
 std::vector<Triangle> Camera::project(std::shared_ptr<Mesh> mesh) {
 
@@ -19,15 +19,19 @@ std::vector<Triangle> Camera::project(std::shared_ptr<Mesh> mesh) {
         return this->_triangles;
     }
 
+
     Matrix4x4 M = mesh->model();
     Matrix4x4 V = Matrix4x4::View(left(), up(), lookAt(), position());
 
     for (auto &t : mesh->triangles()) {
-        Triangle projected;
-
-        // TODO: implement (lessons 2, 3, 4)
-
-        _triangles.emplace_back(projected);
+        Triangle projected = t * M * _SP;
+        Triangle projected_normalized = Triangle(projected[0] / projected[0].w(),
+                                                projected[1] / projected[1].w(),
+                                                projected[2] / projected[2].w(),
+                                                t.color());
+ 
+        // Добавляем нормализованный треугольник вместо ненормализованного
+        _triangles.emplace_back(projected_normalized);
     }
 
     return this->_triangles;

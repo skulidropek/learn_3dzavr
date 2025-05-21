@@ -3,11 +3,11 @@
 //
 
 #include <cmath>
-#include <cassert>
 #include <stdexcept>
+#include <cassert>
 
-#include <linalg/Vec3D.h>
-#include <Consts.h>
+#include "Vec3D.h"
+#include "../Consts.h"
 
 Vec3D::Vec3D(const Vec3D &vec) {
     _arr_point[0] = vec.x();
@@ -28,65 +28,70 @@ Vec3D::Vec3D(double x, double y, double z) {
 }
 
 Vec3D Vec3D::operator-() const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+    return Vec3D(-x(), -y(), -z());
 }
 
 bool Vec3D::operator==(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return true;
+    Vec3D diff = *this - vec;
+
+    return diff.sqrAbs() < Consts::EPS;
 }
 
 bool Vec3D::operator!=(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return true;
+    return !(*this == vec);
 }
 
 // Operations with Vec3D
 Vec3D Vec3D::operator+(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+    return Vec3D(x() + vec.x(), y() + vec.y(), z() + vec.z());
 }
 
 Vec3D Vec3D::operator-(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+    return Vec3D(x() - vec.x(), y() - vec.y(), z() - vec.z());
 }
 
 Vec3D Vec3D::operator*(double number) const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+    return Vec3D(x() * number, y() * number, z() * number);
 }
 
 Vec3D Vec3D::operator/(double number) const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+    if (std::abs(number) > Consts::EPS) {
+        return Vec3D(x() / number, y() / number, z() / number);
+    }
+
+    throw std::invalid_argument("Division by zero");
 }
 
 // Other useful methods
 double Vec3D::sqrAbs() const {
-    // TODO: implement (lesson 1)
-    return 1;
+    return x() * x() + y() * y() + z() * z();
 }
 
 double Vec3D::abs() const {
-    // TODO: implement (lesson 1)
-    return 1;
+    return std::sqrt(sqrAbs());
 }
 
 Vec3D Vec3D::normalized() const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+   double vecAbs = abs();
+
+    if(vecAbs > Consts::EPS) {
+        return Vec3D(*this) / abs();
+    }
+
+    return Vec3D(0);
 }
 
 double Vec3D::dot(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return 0;
+    return x() * vec.x() + y() * vec.y() + z() * vec.z();
 }
 
+
 Vec3D Vec3D::cross(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+    return Vec3D(
+        y() * vec.z() - vec.y() * z(),
+        z() * vec.x() - vec.z() * x(),
+        x() * vec.y() - vec.x() * y()
+    );
 }
 
 Vec4D Vec3D::makePoint4D() const {
