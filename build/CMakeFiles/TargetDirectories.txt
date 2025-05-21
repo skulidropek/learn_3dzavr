@@ -1,0 +1,3 @@
+/home/user/learn_3dzavr/build/CMakeFiles/learn_3dzavr.dir
+/home/user/learn_3dzavr/build/CMakeFiles/edit_cache.dir
+/home/user/learn_3dzavr/build/CMakeFiles/rebuild_cache.dir

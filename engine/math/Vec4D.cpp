@@ -24,55 +24,53 @@ Vec4D::Vec4D(const Vec4D &point4D) {
 }
 
 [[nodiscard]] Vec4D Vec4D::operator-() const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+    return Vec4D(-x(), -y(), -z(), -w());
 }
 
 bool Vec4D::operator==(const Vec4D &point4D) const {
-    // TODO: implement (lesson 1)
-    return true;
+    Vec4D diff = *this - point4D;
+
+    return diff.sqrAbs() < Consts::EPS;
 }
 
 bool Vec4D::operator!=(const Vec4D &point4D) const {
-    // TODO: implement (lesson 1)
-    return true;
+    return !(*this == point4D);
 }
 
 // Operations with Vec4D
 Vec4D Vec4D::operator+(const Vec4D &point4D) const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+    return Vec4D(x() + point4D.x(), y() + point4D.y(), z() + point4D.z(), w() + point4D.w());
 }
 
 Vec4D Vec4D::operator-(const Vec4D &point4D) const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+    return Vec4D(x() - point4D.x(), y() - point4D.y(), z() - point4D.z(), w() - point4D.w());
 }
 
 Vec4D Vec4D::operator*(double number) const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+    return Vec4D(x() * number, y() * number, z() * number, w() * number);
 }
 
 Vec4D Vec4D::operator/(double number) const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+    return Vec4D(x() / number, y() / number, z() / number, w() / number);
 }
 
 // Other useful methods
 double Vec4D::sqrAbs() const {
-    // TODO: implement (lesson 1)
-    return 1;
+    return x() * x() + y() * y() + z() * z() + w() * w();
 }
 
 double Vec4D::abs() const {
-    // TODO: implement (lesson 1)
-    return 1;
+    return std::sqrt(sqrAbs());
 }
 
 Vec4D Vec4D::normalized() const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+      double vecAbs = abs();
+
+    if(vecAbs > Consts::EPS) {
+        return Vec4D(*this) / abs();
+    }
+
+    return Vec4D(0);
 }
 
 bool Vec4D::isNear(double a, double b) {
